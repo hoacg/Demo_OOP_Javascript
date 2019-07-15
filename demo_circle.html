@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="myCanvas" width="1368px" height="300px" style="border:1px solid #d3d3d3;"></canvas>
+
+<script>
+    function Circle(x, y, radius) {
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
+        this.setCanvas = function (canvas) {
+            this.canvas = canvas;
+            this.setContext(canvas.getContext("2d"));
+        }
+        this.setContext = function (context) {
+            this.ctx = context;
+        }
+        this.draw = function () {
+            let ctx = this.ctx;
+            ctx.beginPath();
+            ctx.arc(this.x + this.radius, this.y + this.radius, this.radius, 0, 2 * Math.PI);
+            ctx.fill();
+        }
+        this.moveLeft = function() {
+            this.x += 10;
+        }
+        this.canMoveRight = function () {
+            const circlePosition = this.x + this.radius * 2;
+            const rightPosition = this.canvas.width;
+            return (circlePosition < rightPosition);
+        }
+    }
+
+    let myCanvas = document.getElementById("myCanvas");
+
+    var circle= new Circle(0, 0, 80);
+    circle.setCanvas(myCanvas);
+    circle.draw();
+
+    function clearCanvas() {
+        let context1 = myCanvas.getContext("2d");
+        context1.clearRect(0 , 0, myCanvas.width, myCanvas.height);
+    }
+
+    function start() {
+        clearCanvas();
+
+        if (circle.canMoveRight()) {
+            circle.moveLeft();
+        }
+        circle.draw();
+    }
+
+    setInterval( start, 50);
+</script>
+
+</body>
+</html>
